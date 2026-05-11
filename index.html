@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CMSC 471 — Final Exam Study Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#0a0e1a; --surface:#111827; --surface2:#1a2235; --border:#1e2d4a;
+  --accent:#3b82f6; --accent2:#60a5fa; --gold:#f59e0b; --green:#10b981;
+  --red:#ef4444; --purple:#8b5cf6; --text:#e2e8f0; --muted:#64748b; --code:#0d1117;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;line-height:1.7;min-height:100vh}
+header{background:linear-gradient(135deg,#0f172a 0%,#0a1628 100%);border-bottom:1px solid var(--border);padding:24px 40px;display:flex;align-items:center;gap:18px;position:sticky;top:0;z-index:100}
+.logo-mark{width:38px;height:38px;background:var(--accent);border-radius:9px;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-weight:700;font-size:13px;color:#fff;flex-shrink:0;box-shadow:0 0 18px rgba(59,130,246,.4)}
+header h1{font-family:'Syne',sans-serif;font-weight:800;font-size:19px;letter-spacing:-.5px;color:#fff}
+header p{font-size:12px;color:var(--muted);margin-top:1px}
+.container{display:flex;min-height:calc(100vh - 83px)}
+nav{width:235px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);padding:16px 0;position:sticky;top:83px;height:calc(100vh - 83px);overflow-y:auto}
+nav::-webkit-scrollbar{width:3px}
+nav::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.nav-group-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);padding:14px 18px 5px}
+.nav-item{display:flex;align-items:center;gap:9px;padding:8px 18px;cursor:pointer;font-size:13px;color:var(--muted);border-left:3px solid transparent;transition:all .15s}
+.nav-item:hover{color:var(--text);background:rgba(59,130,246,.05)}
+.nav-item.active{color:var(--accent2);border-left-color:var(--accent);background:rgba(59,130,246,.08);font-weight:500}
+.nav-dot{width:6px;height:6px;border-radius:50%;background:var(--border);flex-shrink:0;transition:background .15s}
+.nav-item.active .nav-dot{background:var(--accent);box-shadow:0 0 5px var(--accent)}
+main{flex:1;padding:38px 46px;overflow-y:auto;max-width:920px}
+.topic{display:none}
+.topic.active{display:block;animation:fadeIn .25s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.topic-header{margin-bottom:28px;padding-bottom:18px;border-bottom:1px solid var(--border)}
+.topic-tag{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:2px 9px;border-radius:3px;margin-bottom:9px}
+.tag-logic{background:rgba(139,92,246,.15);color:#a78bfa}
+.tag-prob{background:rgba(16,185,129,.15);color:#34d399}
+.tag-ml{background:rgba(245,158,11,.15);color:#fbbf24}
+.tag-plan{background:rgba(59,130,246,.15);color:#60a5fa}
+.tag-rl{background:rgba(239,68,68,.15);color:#f87171}
+.tag-nn{background:rgba(236,72,153,.15);color:#f472b6}
+.tag-review{background:rgba(100,116,139,.15);color:#94a3b8}
+.topic-header h2{font-family:'Syne',sans-serif;font-weight:800;font-size:30px;letter-spacing:-1px;color:#fff;line-height:1.1;margin-bottom:6px}
+.topic-header p{color:var(--muted);font-size:14px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:11px;padding:22px;margin-bottom:18px}
+.card h3{font-family:'Syne',sans-serif;font-weight:700;font-size:16px;color:#fff;margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.card h3 .icon{font-size:17px}
+.card p{color:#94a3b8;margin-bottom:9px}
+.card p:last-child{margin-bottom:0}
+.card ul,.card ol{padding-left:18px;color:#94a3b8}
+.card li{margin-bottom:4px}
+strong{color:var(--text);font-weight:600}
+.formula{background:var(--code);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:7px;padding:13px 16px;font-family:'Space Mono',monospace;font-size:12.5px;color:#93c5fd;margin:11px 0;overflow-x:auto;line-height:1.9;white-space:pre}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:18px}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;margin-bottom:18px}
+@media(max-width:680px){.two-col,.three-col{grid-template-columns:1fr}}
+.example{background:var(--surface2);border:1px solid var(--border);border-radius:9px;margin-bottom:14px;overflow:hidden}
+.example-header{display:flex;align-items:center;justify-content:space-between;padding:13px 17px;cursor:pointer;background:rgba(59,130,246,.04);border-bottom:1px solid transparent;transition:background .15s;user-select:none}
+.example-header:hover{background:rgba(59,130,246,.09)}
+.example-header.open{border-bottom-color:var(--border)}
+.example-title{font-family:'Syne',sans-serif;font-weight:700;font-size:13.5px;color:#93c5fd;display:flex;align-items:center;gap:7px}
+.ex-badge{font-size:10px;padding:2px 7px;border-radius:3px;font-family:'Space Mono',monospace;background:rgba(59,130,246,.18);color:var(--accent2);font-weight:400}
+.example-toggle{font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;transition:transform .2s}
+.example-header.open .example-toggle{transform:rotate(180deg)}
+.example-body{padding:17px;display:none}
+.example-body.open{display:block}
+.problem-label,.solution-label{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px}
+.problem-label{color:var(--muted)}
+.solution-label{color:var(--green);margin-top:13px;padding-top:13px;border-top:1px solid var(--border)}
+.problem-text{color:var(--text);margin-bottom:12px;font-size:14px}
+.solution-text{color:#a7f3d0;font-size:14px}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:10px 0}
+th{background:rgba(59,130,246,.1);color:var(--accent2);font-family:'Space Mono',monospace;font-size:10.5px;text-transform:uppercase;letter-spacing:.7px;padding:8px 11px;text-align:left;border-bottom:1px solid var(--border)}
+td{padding:8px 11px;border-bottom:1px solid rgba(30,45,74,.5);color:#94a3b8;font-family:'Space Mono',monospace;font-size:11.5px}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(59,130,246,.03)}
+.info-box{border-radius:7px;padding:12px 16px;margin:11px 0;font-size:13px;display:flex;gap:11px;align-items:flex-start}
+.info-box .box-icon{font-size:17px;flex-shrink:0}
+.info-box.warning{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);color:#fcd34d}
+.info-box.tip{background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.2);color:#6ee7b7}
+.info-box.note{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);color:#93c5fd}
+.compare-card{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:14px}
+.compare-card h4{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;color:#fff;margin-bottom:9px}
+.compare-card ul{color:#94a3b8;padding-left:15px}
+.compare-card li{margin-bottom:3px;font-size:13px}
+.quiz-container{margin-top:28px}
+.quiz-header{font-family:'Syne',sans-serif;font-weight:800;font-size:19px;color:#fff;margin-bottom:3px}
+.quiz-sub{color:var(--muted);font-size:12.5px;margin-bottom:17px}
+.quiz-q{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:18px;margin-bottom:13px;transition:border-color .2s}
+.quiz-q.answered-correct{border-color:var(--green)}
+.quiz-q.answered-wrong{border-color:var(--red)}
+.quiz-question{font-weight:500;color:var(--text);margin-bottom:12px;font-size:14px;line-height:1.5}
+.quiz-options{display:flex;flex-direction:column;gap:7px}
+.quiz-option{display:flex;align-items:flex-start;gap:9px;padding:9px 13px;border:1px solid var(--border);border-radius:6px;cursor:pointer;transition:all .15s;font-size:13px;color:#94a3b8;background:var(--surface2);user-select:none}
+.quiz-option:hover{border-color:var(--accent);color:var(--text);background:rgba(59,130,246,.05)}
+.quiz-option.selected-correct{border-color:var(--green);background:rgba(16,185,129,.1);color:#a7f3d0}
+.quiz-option.selected-wrong{border-color:var(--red);background:rgba(239,68,68,.1);color:#fca5a5}
+.quiz-option.reveal-correct{border-color:var(--green);background:rgba(16,185,129,.07)}
+.opt-letter{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;width:19px;height:19px;border-radius:3px;background:rgba(255,255,255,.05);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+.quiz-feedback{font-size:12.5px;margin-top:9px;padding:9px 13px;border-radius:5px;display:none;line-height:1.5}
+.quiz-feedback.show{display:block}
+.quiz-feedback.correct{background:rgba(16,185,129,.1);color:#6ee7b7}
+.quiz-feedback.wrong{background:rgba(239,68,68,.1);color:#fca5a5}
+.quiz-score-bar{display:flex;align-items:center;gap:14px;padding:14px 18px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;margin-bottom:18px;font-family:'Space Mono',monospace}
+.score-num{font-size:26px;font-weight:700;color:var(--accent2)}
+.score-label{font-size:11px;color:var(--muted)}
+.quiz-reset-btn{margin-left:auto;background:var(--accent);color:#fff;border:none;padding:7px 16px;border-radius:5px;font-family:'Space Mono',monospace;font-size:11px;cursor:pointer;transition:background .15s;letter-spacing:.4px}
+.quiz-reset-btn:hover{background:#2563eb}
+.table-scroll{overflow-x:auto;margin:10px 0}
+.tt td.tt-true{color:#34d399}
+.tt td.tt-false{color:#f87171}
+main::-webkit-scrollbar{width:5px}
+main::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+hr{border:none;border-top:1px solid var(--border);margin:18px 0}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo-mark">AI</div>
+  <div>
+    <h1>CMSC 471 — Final Exam Study Guide</h1>
+    <p>Artificial Intelligence · UMBC · Full Coverage Review</p>
+  </div>
+</header>
+<div class="container">
+  <nav id="app-nav"></nav>
+  <main id="app-main"></main>
+</div>
+
+<script>
+/* ================================================================
+ * HOW TO EDIT THIS STUDY GUIDE
+ * ================================================================
+ *
+ * ADD A NEW TOPIC:
+ *   Push a new object into TOPICS below. Required fields:
+ *     id        — unique string used as the DOM id
+ *     navGroup  — sidebar heading group (e.g. "Logic")
+ *     navLabel  — sidebar link text
+ *     tagText   — pill label (e.g. "Chapter 7-8")
+ *     tagCls    — pill colour class: tag-logic / tag-prob / tag-ml / tag-plan / tag-rl / tag-nn / tag-review
+ *     title     — large heading text
+ *     subtitle  — small subtitle under heading
+ *     quizId    — key into QUIZ_DATA (can reuse across topics)
+ *     content   — raw HTML string for the section body
+ *
+ * EDIT EXISTING CONTENT:
+ *   Find the topic by id in TOPICS, then edit the `content` string.
+ *   Use these CSS classes inside content:
+ *     .card              — bordered content card
+ *     .two-col / .three-col — responsive grid
+ *     .compare-card      — small card inside a grid column
+ *     .formula           — monospace code/formula block  (use spaces, not backticks, inside)
+ *     .info-box.note / .tip / .warning — coloured callout
+ *     .example           — collapsible worked example (requires specific inner HTML, see existing examples)
+ *     table              — auto-styled data table
+ *
+ * ADD QUIZ QUESTIONS:
+ *   Find the right array in QUIZ_DATA (matched by quizId).
+ *   Push: { q:"question text", opts:["A","B","C","D"], ans:0, exp:"explanation" }
+ *   ans is the 0-based index of the correct option.
+ *
+ * RENDERING ENGINE (below the data) — only edit if changing layout/behaviour.
+ * ================================================================ */
+
+// ================================================================
+// QUIZ DATA
+// ================================================================
+const QUIZ_DATA = {
+
+  pl: [
+    { q:"What is the correct way to check if KB entails alpha?",
+      opts:["Add alpha to KB and check if a contradiction follows","Add NOT alpha to KB and use resolution to derive the empty clause","Run A* search over the KB","Count the number of models satisfying alpha"],
+      ans:1, exp:"KB entails alpha iff (KB AND NOT alpha) is unsatisfiable. Add NOT alpha, run resolution; if you reach the empty clause (contradiction), the entailment holds." },
+    { q:"Which of these sentences is a tautology (valid)?",
+      opts:["P AND Q","P OR Q","P OR NOT P","P IMPLIES Q"],
+      ans:2, exp:"P OR NOT P is true in every possible model regardless of the truth value of P — it is a tautology. The others can be false depending on assignments." },
+    { q:"A propositional KB with 3 variables can have at most how many models?",
+      opts:["3","6","8","16"],
+      ans:2, exp:"With n binary variables there are 2^n possible truth assignments. 2^3 = 8. A KB is satisfiable if at least one of these 8 assignments satisfies every sentence." },
+    { q:"Which is NOT a limitation of propositional logic?",
+      opts:["Cannot quantify over objects ('all humans are mortal')","Cannot express relations between objects","Cannot perform resolution-based inference","Cannot represent properties of individual objects without enumerating them"],
+      ans:2, exp:"Resolution inference works perfectly well in propositional logic — in fact it is the standard complete proof procedure. The limitations are expressiveness issues: no quantifiers, no relations, no functions." }
+  ],
+
+  fol: [
+    { q:"Which sentence correctly means 'Every person has a mother'?",
+      opts:["EXISTS y FORALL x person(x) => hasMother(x,y)","FORALL x EXISTS y person(x) => hasMother(x,y)","EXISTS x EXISTS y person(x) AND hasMother(x,y)","FORALL x FORALL y person(x) => hasMother(x,y)"],
+      ans:1, exp:"FORALL x EXISTS y: for every person x there is some y that is their mother. EXISTS is inside FORALL so each person gets their own (possibly different) mother. Option A would mean one single mother for everyone." },
+    { q:"Which is the correct FOL for 'No person can be both male and female'?",
+      opts:["FORALL x person(x) => male(x) OR female(x)","NOT EXISTS x person(x) AND male(x) AND female(x)","EXISTS x NOT (person(x) AND male(x) AND female(x))","FORALL x NOT person(x) OR male(x) OR female(x)"],
+      ans:1, exp:"'No person is both male and female' = there does not exist a person satisfying both. NOT EXISTS x person(x) AND male(x) AND female(x) is exactly this." },
+    { q:"What kind of logic is required to say 'there exists a property that all humans share'?",
+      opts:["Propositional logic","First-order logic","Higher-order logic","Modal logic"],
+      ans:2, exp:"Quantifying over predicates/properties requires higher-order logic. FOL only quantifies over individual domain objects. 'There exists a PROPERTY P such that...' goes beyond FOL." },
+    { q:"What is wrong with 'EXISTS x Person(x) IMPLIES Mortal(x)' as a translation of 'Some person is mortal'?",
+      opts:["The quantifier should be FORALL","The implication is vacuously true even if no persons exist","Mortal should not be a predicate","The sentence is syntactically invalid in FOL"],
+      ans:1, exp:"With EXISTS, an implication is true if the antecedent is false. If nothing satisfies Person(x), the whole sentence is trivially true. Use EXISTS x Person(x) AND Mortal(x) to actually assert that a mortal person exists." }
+  ],
+
+  bayes: [
+    { q:"P(A)=0.3, P(B)=0.4, P(A|B)=0.3. Are A and B independent?",
+      opts:["No, because P(A) does not equal P(B)","Yes, because P(A|B) = P(A)","No, because neither equals 0.5","Cannot determine from the given information"],
+      ans:1, exp:"Independence holds iff P(A|B)=P(A). Here P(A|B)=0.3=P(A), so YES independent. Equivalently P(A,B) = P(A)*P(B) = 0.12." },
+    { q:"Naive Bayes reduces parameters by assuming:",
+      opts:["All classes are equally likely","Features are conditionally independent given the class label","The joint distribution factors into marginals","There are no hidden variables"],
+      ans:1, exp:"Naive Bayes assumes P(f1,...,fn | C) = prod P(fi | C). This reduces parameters from 2^n (full joint) to n*k (n features, k classes) — a huge saving." },
+    { q:"P(Disease)=0.01, P(Test+|Disease)=0.95, P(Test+|No Disease)=0.05. What is P(Disease|Test+) approximately?",
+      opts:["0.95","0.50","0.16","0.01"],
+      ans:2, exp:"P(Test+)=0.95*0.01+0.05*0.99=0.059. P(Disease|Test+)=0.0095/0.059 approx 0.16. Even a 95% accurate test is mostly false positives when the base rate is 1%!" },
+    { q:"Which of these is an issue with Naive Bayes?",
+      opts:["It cannot make predictions for unseen instances","Features are rarely truly conditionally independent","It always overfits the training data","It requires a Bayesian network structure"],
+      ans:1, exp:"Features are almost never truly independent in real data (e.g. word occurrences in text are correlated). Despite this, Naive Bayes often works surprisingly well in practice. Other issues include zero-probability when a feature value has not been seen." }
+  ],
+
+  bbn: [
+    { q:"A Bayesian Belief Network must be a:",
+      opts:["Directed cyclic graph","Undirected weighted graph","Directed acyclic graph (DAG)","Complete bipartite graph"],
+      ans:2, exp:"A BBN is always a DAG. Directed edges show the direction of causal/probabilistic influence. Cycles would create circular dependencies that make the joint distribution undefined." },
+    { q:"In a BBN, a node is conditionally independent of its non-descendants given its:",
+      opts:["Children","Parents","Ancestors","Markov blanket"],
+      ans:1, exp:"This is the d-separation / Markov condition of BBNs: each node Xi is conditionally independent of all non-descendants given its direct parents. This is what makes the factored representation valid." },
+    { q:"Variable Elimination works by:",
+      opts:["Sampling random assignments until convergence","Summing out hidden variables one at a time using factor products","Training a neural network on the CPTs","Running A* over the network structure"],
+      ans:1, exp:"VE: restrict factors to evidence, then for each hidden variable multiply all factors involving it and sum out that variable, creating a new factor. Repeat until only the query variable remains, then normalize." },
+    { q:"Which is TRUE about BBNs?",
+      opts:["They generally need MORE storage than the full joint","A node can have at most two parents","They encode conditional independence assertions among random variables","Information gain is used to determine network structure"],
+      ans:2, exp:"BBNs exploit conditional independence to require far LESS storage than the full joint. Nodes can have any number of parents. Network structure comes from domain knowledge or structure learning — not information gain (that is decision trees)." }
+  ],
+
+  ml: [
+    { q:"Logistic regression outputs a value between 0 and 1 because it applies:",
+      opts:["The ReLU function","The softmax function to a single variable","The sigmoid function to a linear combination of inputs","Log-normalization to the raw scores"],
+      ans:2, exp:"Logistic regression: P(y=1|x) = sigmoid(w*x + b) where sigmoid(z)=1/(1+exp(-z)). The sigmoid squashes any real number into (0,1), making it interpretable as a probability." },
+    { q:"What does Maximum Entropy (MaxEnt) mean in the context of classification?",
+      opts:["Maximize the uncertainty of predictions","Choose the distribution that fits data constraints but is otherwise as uninformative as possible","Always predict the most frequent class","Use a uniform prior over all classes"],
+      ans:1, exp:"MaxEnt: among all distributions consistent with observed feature statistics, choose the one with maximum entropy (fewest additional assumptions). For classification this produces exactly the logistic regression model." },
+    { q:"Which of these is an unsupervised learning task?",
+      opts:["Predicting email spam","Grouping customers by purchasing patterns","Estimating house prices","Classifying tumors as malignant or benign"],
+      ans:1, exp:"Clustering discovers structure without labels — unsupervised. The other three require labeled training examples (supervised)." },
+    { q:"Overfitting means the model:",
+      opts:["Was trained on two examples with conflicting labels","Performs well on training data but poorly on new unseen data","Has too few parameters to represent the training data","Used an inappropriate learning rate"],
+      ans:1, exp:"Overfitting = the model memorizes training noise rather than learning generalizable patterns. High training accuracy, low test accuracy. Fixes: regularization, pruning, early stopping, more data." }
+  ],
+
+  dt: [
+    { q:"ID3 selects the attribute that maximizes:",
+      opts:["Accuracy on the training set","Information gain (reduction in entropy)","Number of examples in the majority branch","Tree depth minimization"],
+      ans:1, exp:"ID3 picks the attribute A maximizing IG(S,A) = H(S) - sum_v (|Sv|/|S|)*H(Sv). This greedy choice is efficient but not guaranteed to produce the globally smallest tree." },
+    { q:"Entropy of a pure set (all same class) is:",
+      opts:["1.0","0.5","0.0","Undefined"],
+      ans:2, exp:"Entropy H = -sum pi*log2(pi). If all examples are one class, p1=1 and all other pi=0, so H = -1*log2(1) = 0. Maximum entropy = 1.0 for a 50/50 binary split." },
+    { q:"ID3 is guaranteed to find:",
+      opts:["The globally smallest consistent decision tree","An optimal tree with respect to test accuracy","A consistent tree but not necessarily the smallest one","The tree with minimum training error"],
+      ans:2, exp:"Finding the globally optimal decision tree is NP-hard. ID3 uses a greedy heuristic (max info gain at each node) and produces a good, consistent tree efficiently — but not necessarily the smallest one." },
+    { q:"A decision tree classifier CAN be used for:",
+      opts:["Binary classification only","Multi-class classification only","Both classification and regression","Unsupervised clustering"],
+      ans:2, exp:"Decision trees handle multi-class classification (more than two classes) and regression (predicting continuous values, via regression trees). They are not limited to binary tasks." }
+  ],
+
+  nn: [
+    { q:"A single perceptron cannot learn the XOR function because:",
+      opts:["XOR requires more than one output node","XOR data is not linearly separable","The perceptron learning rule diverges on XOR","XOR requires a recurrent connection"],
+      ans:1, exp:"A single-layer perceptron finds a linear decision boundary. XOR cannot be separated by any single hyperplane — you need at least one hidden layer (MLP) to represent it." },
+    { q:"CNNs are best suited for which type of data?",
+      opts:["Sequential/time-series data","Grid-structured data such as images","Unstructured tabular data","Graph-structured data"],
+      ans:1, exp:"CNNs exploit local spatial structure through convolutional filters and pooling. They are ideal for images, audio spectrograms, and any data with spatial or grid structure." },
+    { q:"In a Transformer, the Decoder is responsible for:",
+      opts:["Producing contextual representations of the full input","Generating output tokens sequentially, attending to the encoder output","Encoding the positional information of tokens","Pre-training on unlabeled text"],
+      ans:1, exp:"The decoder generates output one token at a time. It attends to (a) its own previously generated tokens and (b) the encoder output via cross-attention. Used in translation (T5), summarization, text generation." },
+    { q:"Which architecture uses a hidden state to carry information across time steps?",
+      opts:["CNN","MLP","RNN / LSTM","Transformer encoder"],
+      ans:2, exp:"RNNs maintain a hidden state hₜ = f(hₜ₋₁, xₜ) that carries information from previous steps. LSTMs and GRUs are gated RNN variants that better handle long-range dependencies." }
+  ],
+
+  plan: [
+    { q:"In the Blocks World, what does the predicate Clear(X) mean?",
+      opts:["X is on the table","No block is currently on top of X","X is being held by the robot arm","X has been moved at least once"],
+      ans:1, exp:"Clear(X) means the top surface of block X is unoccupied — nothing is stacked on it. This is a precondition for stacking something on top of X or picking X up directly." },
+    { q:"The Sussman Anomaly demonstrates that STRIPS can:",
+      opts:["Find the optimal plan for the blocks world","Undo a previously achieved subgoal while working on another","Never find a valid solution","Only plan with two blocks at a time"],
+      ans:1, exp:"STRIPS (linear planner) achieves goals sequentially. In achieving a later goal it may undo work done for an earlier one, requiring it to re-achieve that condition. This leads to unnecessarily long plans and the planner is incomplete." },
+    { q:"State-space planning searches through:",
+      opts:["A space of possible partial plans","A space of world states with actions as transitions","A space of CNF clauses","A network of Bayesian nodes"],
+      ans:1, exp:"State-space planning: nodes are world states, edges are actions. Forward search applies actions from the initial state; backward (regression) search applies inverse actions from the goal." },
+    { q:"A partial-order planner differs from STRIPS by being:",
+      opts:["Sound but not complete","Complete but not sound","Both sound AND complete","Neither sound nor complete"],
+      ans:2, exp:"POP is sound (only valid plans) and complete (finds a solution if one exists). STRIPS is sound but incomplete — it can miss some solutions, especially when goals interact (Sussman Anomaly)." }
+  ],
+
+  rl: [
+    { q:"The Markov property means:",
+      opts:["Actions are always deterministic","The future is conditionally independent of the past given the current state","Rewards are bounded by a discount factor","The state space is finite"],
+      ans:1, exp:"P(s_{t+1} | s_0,a_0,...,s_t,a_t) = P(s_{t+1} | s_t, a_t). The current state captures all information needed to predict the future — the past is irrelevant given the present." },
+    { q:"A discount factor gamma = 0 means the agent:",
+      opts:["Values all future rewards equally","Only cares about the immediate reward","Explores randomly","Never reaches a terminal state"],
+      ans:1, exp:"G = sum gamma^t * R_t. With gamma=0: G = R_0 — only the first reward counts (greedy agent). gamma=1 weights all future rewards equally. gamma in (0,1) balances short vs long term." },
+    { q:"In an MDP the transition function T(s,a,s') represents:",
+      opts:["The reward for reaching s'","The probability of reaching s' when taking action a in state s","The optimal policy for action selection","The discount applied to future rewards"],
+      ans:1, exp:"T(s,a,s') = P(s'|s,a): the probability distribution over next states given the current state and action. Deterministic actions have T(s,a,s')=1 for exactly one s'." },
+    { q:"RL differs from classical planning primarily because:",
+      opts:["RL cannot handle stochastic environments","RL agents must discover T and R through experience instead of having them given","RL only works for discrete action spaces","RL always finds the optimal policy"],
+      ans:1, exp:"Classical planning: T and R are given in a formal model (STRIPS/PDDL). RL: the agent learns by interacting with an unknown environment, observing rewards and state transitions. Much more general but also harder." }
+  ],
+
+  tf: [
+    { q:"Every complete inference procedure is also sound.",opts:["True","False"],ans:1,exp:"False. A procedure can find every entailed sentence (complete) yet also produce sentences not entailed (unsound). Soundness and completeness are independent." },
+    { q:"An unsound inference procedure can produce an incorrect answer.",opts:["True","False"],ans:0,exp:"True. By definition, an unsound procedure may derive sentences not entailed by the KB — i.e., incorrect conclusions." },
+    { q:"Every model of (A AND (B OR C)) is also a model of (A OR (B OR C)).",opts:["True","False"],ans:0,exp:"True. If A AND (B OR C) is satisfied then A is true, so A OR anything is also true. The second sentence is weaker (harder to falsify) so every model of the first is a model of the second." },
+    { q:"Resolution is a sound and complete inference procedure.",opts:["True","False"],ans:0,exp:"True for refutation completeness: if KB entails alpha, then resolution on {KB, NOT alpha} will eventually derive the empty clause. It is also sound — every derived clause is entailed." },
+    { q:"Propositional logic can express the statement 'All humans are mortal' concisely.",opts:["True","False"],ans:1,exp:"False. PL has no quantifiers or object variables. You must write a separate proposition for every individual (JohnIsMortal, MaryIsMortal, ...). FOL handles this with FORALL x Human(x) => Mortal(x)." },
+    { q:"The STRIPS planning algorithm is sound but incomplete.",opts:["True","False"],ans:0,exp:"True. STRIPS only produces valid plans (sound), but it can fail to find solutions that exist, particularly when achieving one goal undoes another (Sussman Anomaly). Hence it is incomplete." },
+    { q:"Regression planners search for plans by starting from a goal state and working backward.",opts:["True","False"],ans:0,exp:"True. Backward (regression) planning starts at the goal and asks 'what action could have produced this state?' working back to the initial state." },
+    { q:"A well-formed Bayesian Belief Network can contain cycles.",opts:["True","False"],ans:1,exp:"False. A BBN must be a Directed Acyclic Graph (DAG). Cycles create circular probabilistic dependencies that make the joint distribution undefined." },
+    { q:"A node in a BBN is always conditionally independent of its non-descendants given its parents.",opts:["True","False"],ans:0,exp:"True. This is the defining Markov condition of BBNs and the source of their representational efficiency." },
+    { q:"The K-nearest neighbors algorithm is an unsupervised clustering technique.",opts:["True","False"],ans:1,exp:"False. KNN is supervised — it classifies a new instance by majority vote among its K nearest labeled training examples. K-means is the unsupervised clustering algorithm." },
+    { q:"Logistic regression and MaxEnt (Maximum Entropy) models are equivalent for classification.",opts:["True","False"],ans:0,exp:"True. Both arrive at the same model from different starting points: logistic regression from a probabilistic discriminative model; MaxEnt from information-theoretic principles. They produce identical predictions." },
+    { q:"Linear regression is used to predict continuous-valued outputs.",opts:["True","False"],ans:0,exp:"True. Linear regression fits a hyperplane y = w*x + b minimizing squared error, predicting real-valued outputs. Logistic regression applies sigmoid to this to get class probabilities." },
+    { q:"ID3 is guaranteed to find the smallest decision tree consistent with the training data.",opts:["True","False"],ans:1,exp:"False. Finding the globally smallest consistent decision tree is NP-hard. ID3 uses a greedy heuristic (maximum information gain) and finds a good but not necessarily optimal tree." },
+    { q:"Decision tree learning can only produce binary classifiers.",opts:["True","False"],ans:1,exp:"False. Decision trees handle multi-class classification and regression. Binary refers to binary splits on attributes, not to the number of output classes." },
+    { q:"Overfitting occurs when a model has been trained on two examples with different labels.",opts:["True","False"],ans:1,exp:"False. Overfitting means the model fits training data noise too closely and generalizes poorly to new data. It is about excess model complexity relative to data, not conflicting labels." },
+    { q:"Bagging (Bootstrap Aggregating) is a technique used in building Bayesian networks.",opts:["True","False"],ans:1,exp:"False. Bagging trains many models on bootstrap samples and aggregates their outputs. It is used in random forests and other ensemble methods, not in Bayesian network construction." },
+    { q:"A single perceptron with a threshold activation function cannot learn the XOR function.",opts:["True","False"],ans:0,exp:"True. XOR is not linearly separable — no single hyperplane can correctly classify all four input combinations. A perceptron only finds linear boundaries. An MLP with one hidden layer can solve XOR." },
+    { q:"The Markov property states that the future is conditionally independent of the past given the current state.",opts:["True","False"],ans:0,exp:"True. P(s_{t+1} | history) = P(s_{t+1} | s_t, a_t). This is the foundation of the MDP formalism." },
+    { q:"The precision metric is defined as TP / (TP + FP).",opts:["True","False"],ans:0,exp:"True. Precision = of all instances predicted positive, what fraction are actually positive. Recall = TP/(TP+FN) = of all actual positives, what fraction did we correctly identify." },
+    { q:"A learning curve in machine learning shows the trade-off between precision and recall.",opts:["True","False"],ans:1,exp:"False. A learning curve shows model performance (accuracy or error) as a function of training set size. A precision-recall curve is a different diagnostic tool for classifier performance." }
+  ]
+};
+
+// ================================================================
+// TOPIC DEFINITIONS  — edit content HTML strings here
+// ================================================================
+const TOPICS = [
+
+  // ── PROPOSITIONAL LOGIC ────────────────────────────────────────
+  { id:"prop-logic", navGroup:"Logic", navLabel:"Propositional Logic",
+    tagText:"Chapter 7–8", tagCls:"tag-logic",
+    title:"Propositional Logic",
+    subtitle:"Syntax, semantics, validity, model counting, KB satisfiability, CNF, resolution, soundness & completeness, and limitations of PL",
+    quizId:"pl",
+    content:`
+<div class="two-col">
+  <div class="card">
+    <h3><span class="icon">📖</span>Key Definitions</h3>
+    <p><strong>Syntax</strong> — legal sentences: atoms, NOT, AND, OR, IMPLIES, BICONDITIONAL.</p>
+    <p><strong>Semantics</strong> — the meaning of a sentence; its truth value under a model.</p>
+    <p><strong>Model</strong> — an assignment of T/F to every variable that satisfies all KB sentences.</p>
+    <p><strong>Entailment</strong> — KB entails alpha (KB |= alpha) means every model of KB is also a model of alpha.</p>
+  </div>
+  <div class="card">
+    <h3><span class="icon">⚖️</span>Validity, Satisfiability, Consistency</h3>
+    <p><strong>Valid (tautology)</strong> — true in ALL models. E.g., P OR NOT P.</p>
+    <p><strong>Satisfiable</strong> — true in at LEAST ONE model.</p>
+    <p><strong>Unsatisfiable</strong> — false in ALL models (contradiction). E.g., P AND NOT P.</p>
+    <p><strong>Key link:</strong> KB |= alpha   iff   (KB AND NOT alpha) is unsatisfiable.</p>
+  </div>
+</div>
+
+<div class="card">
+  <h3><span class="icon">🔢</span>Counting Models &amp; Proving KB Satisfiability</h3>
+  <p>A <strong>model</strong> is any T/F assignment to all variables that satisfies every KB sentence. To count models, enumerate all 2<sup>n</sup> possible assignments and check each against the KB.</p>
+  <div class="formula">Example: KB = { A OR B,  NOT A }    (two variables: A, B)
+
+ A  | B  | A OR B | NOT A | Satisfies KB?
+ T  | T  |   T    |   F   |     FAIL
+ T  | F  |   T    |   F   |     FAIL
+ F  | T  |   T    |   T   |     PASS  <- 1 model
+ F  | F  |   F    |   T   |     FAIL
+
+Exactly 1 model: KB is SATISFIABLE.</div>
+  <p style="margin-top:10px"><strong>Proving KB satisfiable:</strong> find at least one satisfying assignment (enumerate or guess-and-check). If you add no extra formula and resolution on KB alone produces the empty clause, the KB is UNSATISFIABLE.</p>
+  <div class="info-box tip">
+    <div class="box-icon">✅</div>
+    <div>Distinguishing the two tasks: <strong>satisfiability check</strong> = does ANY model exist? <strong>Refutation proof</strong> = does adding NOT alpha to KB produce a contradiction? Know both procedures for the exam.</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3><span class="icon">🔄</span>Converting to CNF — Step by Step</h3>
+  <p>CNF = Conjunctive Normal Form = a conjunction (AND) of <em>clauses</em>, where each clause is a disjunction (OR) of literals. Every propositional sentence has an equivalent CNF.</p>
+  <div class="formula">Step 1: Eliminate biconditionals (A biconditional B) -> (A -> B) AND (B -> A)
+Step 2: Eliminate implications (A -> B) -> NOT A OR B
+Step 3: Push NOT inward using De Morgan's laws:
+          NOT(A AND B) -> NOT A OR NOT B
+          NOT(A OR B)  -> NOT A AND NOT B
+          NOT(NOT A)   -> A
+Step 4: Distribute OR over AND:
+          A OR (B AND C) -> (A OR B) AND (A OR C)</div>
+  <div class="info-box warning">
+    <div class="box-icon">⚠️</div>
+    <div>Most common exam step: converting implications. Remember A IMPLIES B becomes NOT A OR B. Apply this <em>before</em> pushing negations inward.</div>
+  </div>
+</div>
+
+<div class="two-col">
+  <div class="card">
+    <h3><span class="icon">⚡</span>Resolution Rule</h3>
+    <p>From clauses <strong>(p OR L1 OR L2)</strong> and <strong>(NOT p OR M1 OR M2)</strong>, derive <strong>(L1 OR L2 OR M1 OR M2)</strong>.</p>
+    <p><strong>Refutation:</strong> to prove alpha, add NOT alpha to KB and apply resolution until the empty clause (contradiction) is derived.</p>
+  </div>
+  <div class="card">
+    <h3><span class="icon">✅</span>Soundness &amp; Completeness</h3>
+    <p><strong>Sound</strong> — every derived sentence IS entailed. No incorrect conclusions.</p>
+    <p><strong>Complete</strong> — CAN derive every entailed sentence.</p>
+    <p>Resolution is both sound AND complete for refutation. These two properties are INDEPENDENT — sound does not imply complete, and vice versa.</p>
+  </div>
+</div>
+
+<div class="card">
+  <h3><span class="icon">🚧</span>Limitations of Propositional Logic</h3>
+  <p>PL is too weak a language for most real AI domains. Knowing these limitations explains why FOL was developed.</p>
+  <div class="two-col" style="margin-top:10px">
+    <div class="compare-card">
+      <h4>What PL Cannot Express</h4>
+      <ul>
+        <li><strong>Object properties:</strong> cannot say "John is tall" without a dedicated atom JohnIsTall per person</li>
+        <li><strong>Relations:</strong> cannot express Loves(John, Mary) or Above(Block1, Block2)</li>
+        <li><strong>Quantification:</strong> cannot say "ALL humans are mortal" — must enumerate every human</li>
+        <li><strong>Functions:</strong> cannot express MotherOf(John) or Add(2,3)</li>
+      </ul>
+    </div>
+    <div class="compare-card">
+      <h4>Practical Consequences</h4>
+      <ul>
+        <li>Rules must be repeated per individual: JohnIsMortal, MaryIsMortal, ...</li>
+        <li>Any general fact about a class requires exponentially many propositions</li>
+        <li>Cannot generalize across new individuals not seen during knowledge encoding</li>
+        <li><strong>Fix:</strong> First-Order Logic adds variables, quantifiers, predicates, and functions</li>
+      </ul>
+    </div>
+  </div>
+  <div class="formula">In PL (requires one atom per room):   WumpusIn1, WumpusIn2, WumpusIn3, ...
+In FOL (one sentence for all rooms):  In(Wumpus, x)   for any variable x
+In PL (requires enumeration):         JohnIsMortal AND MaryIsMortal AND ...
+In FOL (one universal rule):          FORALL x Human(x) => Mortal(x)</div>
+</div>
+
+<div class="example">
+  <div class="example-header" onclick="toggleExample(this)">
+    <div class="example-title"><span class="ex-badge">EXAMPLE</span>CNF Conversion: P -> (Q AND R)</div>
+    <div class="example-toggle">▼</div>
+  </div>
+  <div class="example-body">
+    <div class="problem-label">Problem</div>
+    <div class="problem-text">Convert P -> (Q AND R) to CNF.</div>
+    <div class="solution-label">Solution</div>
+    <div class="solution-text">
+      <div class="formula">Step 2 (eliminate ->):   NOT P OR (Q AND R)
+Step 3 (no negations to push)
+Step 4 (distribute OR over AND): (NOT P OR Q)  AND  (NOT P OR R)
+
+CNF result: two clauses ->  {NOT P OR Q}  and  {NOT P OR R}</div>
+    </div>
+  </div>
+</div>
+
+<div class="example">
+  <div class="example-header" onclick="toggleExample(this)">
+    <div class="example-title"><span class="ex-badge">EXAM 2016</span>Resolution Refutation Proof</div>
+    <div class="example-toggle">▼</div>
+  </div>
+  <div class="example-body">
+    <div class="problem-label">Prove IWin from KB: {Heads OR Tails, NOT Heads OR NOT Tails, NOT Heads OR IWin, NOT Tails OR YouLose, NOT YouLose OR IWin, NOT IWin OR YouLose}. There are 2 models (both with IWin=T, YouLose=T).</div>
+    <div class="solution-label">Resolution Refutation — assume NOT IWin</div>
+    <div class="solution-text">
+      <table>
+        <thead><tr><th>Step</th><th>Action</th><th>Result</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td>assume</td><td>NOT IWin</td></tr>
+          <tr><td>2</td><td>given</td><td>NOT Heads OR IWin</td></tr>
+          <tr><td>3</td><td>resolve 1,2</td><td>NOT Heads</td></tr>
+          <tr><td>4</td><td>given</td><td>Heads OR Tails</td></tr>
+          <tr><td>5</td><td>resolve 3,4</td><td>Tails</td></tr>
+          <tr><td>6</td><td>given</td><td>NOT Tails OR YouLose</td></tr>
+          <tr><td>7</td><td>resolve 5,6</td><td>YouLose</td></tr>
+          <tr><td>8</td><td>given</td><td>NOT YouLose OR IWin</td></tr>
+          <tr><td>9</td><td>resolve 7,8</td><td>IWin</td></tr>
+          <tr><td>10</td><td>resolve 1,9</td><td>EMPTY CLAUSE (contradiction)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div class="example">
+  <div class="example-header" onclick="toggleExample(this)">
+    <div class="example-title"><span class="ex-badge">EXAM 2018</span>Model Counting — Rain / Umbrella</div>
+    <div class="example-toggle">▼</div>
+  </div>
+  <div class="example-body">
+    <div class="problem-label">KB: R->U (if rain then umbrella), U->NOT W (umbrella means not wet), NOT R->NOT W (no rain means not wet). How many models?</div>
+    <div class="solution-label">CNF + enumeration</div>
+    <div class="solution-text">
+      <div class="formula">CNF clauses:  {NOT R OR U}    {NOT U OR NOT W}    {R OR NOT W}
+
+Check all 8 (R,U,W) assignments:
+  R=1,U=1,W=0: all three clauses true   -> PASS
+  R=1,U=0,W=0: NOT R OR U = F          -> FAIL
+  R=0,U=1,W=0: all clauses true         -> PASS
+  R=0,U=0,W=0: all clauses true         -> PASS
+  Any W=1:     NOT U OR NOT W needs NOT U,
+               R OR NOT W needs NOT R,
+               but NOT R OR U then needs U — contradiction -> FAIL
+
+Answer: 3 models, all with W=0. You NEVER get wet — proved!</div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // ── FIRST-ORDER LOGIC ──────────────────────────────────────────
+  { id:"fol", navGroup:"Logic", navLabel:"First-Order Logic",
+    tagText:"Chapter 8–9", tagCls:"tag-logic",
+    title:"First-Order Logic",
+    subtitle:"Quantifiers, predicates, English to FOL translation, FOL vs higher-order logic",
+    quizId:"fol",
+    content:`
+<div class="card">
+  <h3><span class="icon">🔤</span>FOL Building Blocks</h3>
+  <div class="three-col" style="margin-top:8px">
+    <div class="compare-card">
+      <h4>Terms</h4>
+      <ul>
+        <li>Constants: John, 42, Table</li>
+        <li>Variables: x, y, z</li>
+        <li>Functions: MotherOf(x), Add(2,3)</li>
+      </ul>
+    </div>
+    <div class="compare-card">
+      <h4>Predicates (Atoms)</h4>
+      <ul>
+        <li>Person(x)</li>
+        <li>Loves(John, Mary)</li>
+        <li>On(Block1, Block2)</li>
+        <li>Greater(x, y)</li>
+      </ul>
+    </div>
+    <div class="compare-card">
+      <h4>Quantifiers</h4>
+      <ul>
+        <li>FORALL x — "for all x"</li>
+        <li>EXISTS x — "there exists x"</li>
+        <li>NOT FORALL = EXISTS NOT</li>
+        <li>NOT EXISTS = FORALL NOT</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h3><span class="icon">🔁</span>Quantifier Rules &amp; Common Mistakes</h3>
+  <div class="formula">NOT FORALL x P(x)   =   EXISTS x NOT P(x)
+NOT EXISTS x P(x)   =   FORALL x NOT P(x)
+
+With FORALL: use IMPLIES      FORALL x Person(x) => Mortal(x)
+With EXISTS:  use AND         EXISTS x Person(x) AND Mortal(x)</div>
+  <div class="info-box warning">
+    <div class="box-icon">⚠️</div>
+    <div><strong>Classic exam trap:</strong> EXISTS x Person(x) IMPLIES Mortal(x) does NOT mean "some person is mortal." If no person exists, the implication is vacuously true. Always use AND with EXISTS to assert actual existence.</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3><span class="icon">🗺️</span>Translation Patterns — English to FOL</h3>
+  <div class="formula">English                                    FOL
+"All A are B"                          FORALL x A(x) => B(x)
+"Some A are B"                         EXISTS x A(x) AND B(x)
+"No A is B"                            NOT EXISTS x A(x) AND B(x)
+                                        (equiv: FORALL x A(x) => NOT B(x))
+"Every A has some B"                   FORALL x A(x) => EXISTS y B(y) AND Rel(x,y)
+"There is one B shared by all A"       EXISTS y FORALL x A(x) => Rel(x,y)
+"Good food is not cheap and vice versa" FORALL x food(x) => (good(x) BICONDITIONAL NOT cheap(x))</div>
+  <div class="info-box note">
+    <div class="box-icon">💡</div>
+    <div>The scope of quantifiers matters. FORALL x EXISTS y means each x gets its own y. EXISTS y FORALL x means one fixed y works for all x — a much stronger claim.</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3><span class="icon">🌐</span>FOL vs Higher-Order Logic</h3>
+  <div class="two-col" style="margin-top:8px">
+    <div class="compare-card">
+      <h4>First-Order Logic</h4>
+      <ul>
+        <li>Quantifies over <strong>individual objects</strong> (domain elements)</li>
+        <li>"For all people x, ..."</li>
+        <li>Predicates and functions are fixed, not quantified over</li>
+        <li>Decidable for some fragments; semi-decidable in general</li>
+      </ul>
+    </div>
+    <div class="compare-card">
+      <h4>Higher-Order Logic</h4>
+      <ul>
+        <li>Quantifies over <strong>predicates and functions</strong></li>
+        <li>"There exists a property P such that all people have P"</li>
+        <li>Much more expressive than FOL</li>
+        <li>Generally undecidable; harder to implement</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="example">
+  <div class="example-header" onclick="toggleExample(this)">
+    <div class="example-title"><span class="ex-badge">EXAM 2018</span>English to FOL — Four Sentences</div>
+    <div class="example-toggle">▼</div>
+  </div>
+  <div class="example-body">
+    <div class="problem-label">Translate each sentence to FOL</div>
+    <div class="problem-text">
+      A) "Every person is either male or female"<br>
+      B) "No person can be both male and female"<br>
+      C) "Every person has a mother"<br>
+      D) "Good food is not cheap and cheap food is not good"
+    </div>
+    <div class="solution-label">Solutions</div>
+    <div class="solution-text">
+      <div class="formula">A) FORALL x Person(x) => (male(x) OR female(x))
+   also correct: NOT EXISTS x Person(x) AND NOT(male(x) OR female(x))
+
+B) NOT EXISTS x Person(x) AND male(x) AND female(x)
+   also correct: FORALL x Person(x) => NOT(male(x) AND female(x))
+
+C) FORALL x EXISTS y Person(x) => hasMother(x, y)
+   NOTE: EXISTS is inside FORALL — each person has their own mother
+
+D) FORALL x food(x) => (good(x) BICONDITIONAL NOT cheap(x))
+   Expanded: FORALL x food(x) => (good(x) => NOT cheap(x)) AND (cheap(x) => NOT good(x))</div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // ── BAYESIAN REASONING ────────────────────────────────────────
+  { id:"bayes", navGroup:"Probability", navLabel:"Bayesian Reasoning",
+    tagText:"Chapter 12", tagCls:"tag-prob",
+    title:"Bayesian Reasoning",
+    subtitle:"Joint, marginal & conditional probability, Bayes' Rule, Naive Bayes, independence",
+    quizId:"bayes",
+    content:`
+<div class="two-col">
+  <div class="card">
+    <h3><span class="icon">📊</span>Probability Basics</h3>
+    <div class="formula">Joint:        P(A, B) = P(A|B) * P(B)
+Marginal:     P(A) = SUM_b P(A, B=b)
+Conditional:  P(A|B) = P(A,B) / P(B)
+Chain rule:   P(A,B,C) = P(A|B,C)*P(B|C)*P(C)</div>
+  </div>
+  <div class="card">
+    <h3><span class="icon">🔀</span>Bayes' Rule</h3>
+    <div class="formula">P(A|B) = P(B|A) * P(A) / P(B)
+
+  P(A)    = prior (belief before evidence)
+  P(B|A)  = likelihood
+  P(A|B)  = posterior (belief after evidence B)
+  P(B)    = normalizing constant (total prob of B)</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3><span class="icon">🔗</span>Independence &amp; Conditional Independence</h3>
+  <p><strong>Unconditional independence:</strong> A independent of B iff P(A|B) = P(A), equivalently P(A,B) = P(A)*P(B).</p>
+  <p><strong>Conditional independence:</strong> A independent of B given C iff P(A|B,C) = P(A|C). Knowing C renders A and B independent.</p>
+  <div class="info-box tip">
+    <div class="box-icon">✅</div>
+    <div>To check independence from a joint table: compute P(A,B) and compare to P(A)*P(B). Equal -> independent; not equal -> dependent.</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3><span class="icon">🎲</span>Naive Bayes Classifier</h3>
+  <p>Classifies by computing P(class | features) under the assumption that all features are <strong>conditionally independent given the class</strong>.</p>
+  <div class="formula">P(C | f1, f2, ..., fn)  proportional to  P(C) * PRODUCT_i P(fi | C)
+
+Parameter count comparison (n binary features, k classes):
+  Full joint:   2^n - 1 parameters
+  Naive Bayes:  n*k   parameters   <- massive reduction!</div>
+  <p><strong>Issues with Naive Bayes:</strong></p>
+  <ul>
+    <li>Features are rarely truly conditionally independent in practice</li>
+    <li>Zero-probability problem: if a feature value never appeared with class C in training, P(fi|C)=0 zeros out the whole posterior. Fix: Laplace (add-1) smoothing</li>
+    <li>Produces overconfident posteriors (near 0 or 1)</li>
+  </ul>
+</div>
+
+<div class="example">
+  <div class="example-header" onclick="toggleExample(this)">
+    <div class="example-title"><span class="ex-badge">EXAM 2016</span>Bayes' Rule Calculation</div>
+    <div class="example-toggle">▼</div>
+  </div>
+  <div class="example-body">
+    <div class="problem-label">Problem</div>
+    <div class="problem-text">P(ace) = 0.1, P(A grade) = 0.4, P(A grade | ace) = 0.96. Find P(ace | A grade).</div>
+    <div class="solution-label">Solution</div>
+    <div class="solution-text">
+      <div class="formula">P(ace | A) = P(A | ace) * P(ace) / P(A)
+            = 0.96 * 0.1 / 0.4
+            = 0.096 / 0.4
+            = 0.24</div>
+    </div>
+  </div>
+</div>
+
+<div class="example">
+  <div class="example-header" onclick="toggleExample(this)">
+    <div class="example-title"><span class="ex-badge">EXAM 2018</span>Joint Distribution — Independence Checks</div>
+    <div class="example-toggle">▼</div>
+  </div>
+  <div class="example-body">
+    <div class="problem-label">Joint table for Boolean A, B, C</div>
+    <div class="problem-text">
+      <div class="table-scroll">
+        <table class="tt">
+          <thead><tr><th>A</th><th>B</th><th>C</th><th>P(A,B,C)</th></tr></thead>
+          <tbody>
+            <tr><td class="tt-true">T</td><td class="tt-true">T</td><td class="tt-true">T</td><td>0.03</td></tr>
+            <tr><td class="tt-true">T</td><td class="tt-true">T</td><td class="tt-false">F</td><td>0.12</td></tr>
+            <tr><td class="tt-true">T</td><td class="tt-false">F</td><td class="tt-true">T</td><td>0.17</td></tr>
+            <tr><td class="tt-true">T</td><td class="tt-false">F</td><td class="tt-false">F</td><td>0.18</td></tr>
+            <tr><td class="tt-false">F</td><td class="tt-true">T</td><td class="tt-true">T</td><td>0.03</td></tr>
+            <tr><td class="tt-false">F</td><td class="tt-true">T</td><td class="tt-false">F</td><td>0.12</td></tr>
+            <tr><td class="tt-false">F</td><td class="tt-false">F</td><td class="tt-true">T</td><td>0.24</td></tr>
+            <tr><td class="tt-false">F</td><td class="tt-false">F</td><td class="tt-false">F</td><td>0.11</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="solution-label">Key calculations</div>
+    <div class="solution-text">
+      <div class="formula">P(A=F) = 0.03+0.12+0.24+0.11 = 0.50
+P(B=T) = 0.03+0.12+0.03+0.12 = 0.30
+P(B=T,C=T) = 0.03+0.03 = 0.06
+
+A ind B?  P(A=T)*P(B=T) = 0.5*0.3 = 0.15 = P(A=T,B=T) -> YES independent
+B ind C?  P(B=T)*P(C=T) = 0.3*0.47 = 0.141 != P(B=T,C=T)=0.06 -> NOT independent
+
+P(A=T | B=T) = P(A=T,B=T)/P(B=T) = 0.15/0.30 = 0.5</div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // ── BAYESIAN NETWORKS ─────────────────────────────────────────
+  { id:"bbn", navGroup:"Probability", navLabel:"Bayesian Networks",
+    tagText:"Chapter 13", tagCls:"tag-prob",
+    title:"Bayesian Belief Networks",
+    subtitle:"DAG structure, CPTs, variable elimination, MLE, polytrees",
+    quizId:"bbn",
+    content:`
+<div class="card">
+  <h3><span class="icon">🕸️</span>Network Structure</h3>
+  <p>A BBN is a <strong>Directed Acyclic Graph (DAG)</strong> where each node is a random variable and each directed edge X -> Y represents a direct probabilistic influence of X on Y. Each node carries a <strong>Conditional Probability Table (CPT)</strong> specifying P(node | parents).</p>
+  <p><strong>Markov condition:</strong> every node is conditionally independent of its non-descendants given its parents.</p>
+  <div class="info-box note">
+    <div class="box-icon">💡</div>
+    <div><strong>Polytree:</strong> A BBN with at most one undirected path between any two nodes. Allows efficient exact inference. Non-polytrees (like the nuclear-plant example) require more expensive methods.</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3><span class="icon">📉</span>Parameter Savings vs Full Joint</h3>
+  <div class="formula">Full joint over n binary vars:   2^n - 1 parameters
+BBN with parent sets pi(Xi):     SUM_i 2^|pi(Xi)| parameters
+
+Example: 5-variable chain A -> B -> C -> D -> E
+Full joint: 2^5 - 1 = 31
+BBN: 1 + 2 + 2 + 2 + 2 = 9  (huge saving!)</div>
+</div>
+
+<div class="card">
+  <h3><span class="icon">🔢</span>Variable Elimination (VE)</h3>
+  <p>Exact inference algorithm. Computes P(Query | Evidence) by summing hidden variables out one at a time.</p>
+  <div class="formula">Goal: P(X | evidence e)
+1. Start with all CPTs as factors
+2. Restrict every factor to the observed evidence values
+3. For each hidden variable Z (in chosen order):
+   a. Collect all factors that mention Z
+   b. Multiply them into one combined factor
+   c. Sum Z out of that factor -> new smaller factor
+4. Multiply all remaining factors together
+5. Normalize result to get posterior distribution</div>
+  <div class="info-box warning">
+    <div class="box-icon">⚠️</div>
+    <div>Elimination order affects computational cost. Follow the order given in class/homework examples for the exam.</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3><span class="icon">📐</span>Maximum Likelihood Estimation (MLE)</h3>
+  <p>Estimate CPT parameters from data by counting. Choose the parameter values that maximize the probability of the observed training data.</p>
+  <div class="formula">P(X=x | parents=p)  estimated as  count(X=x AND parents=p) / count(parents=p)
+
+Example: 70 out of 100 rainy days also had clouds:
+  P(Clouds=T | Rain=T) = 70/100 = 0.70</div>
+</div>
+
+<div class="example">
+  <div class="example-header" onclick="toggleExample(this)">
+    <div class="example-title"><span class="ex-badge">EXAM 2016</span>Nuclear Plant BBN — Structure and CPTs</div>
+    <div class="example-toggle">▼</div>
+  </div>
+  <div class="example-body">
+    <div class="problem-label">Variables: T (core temp), Fg (gauge faulty), G (gauge reading), Fa (alarm faulty), A (alarm sounds)</div>
+    <div class="solution-label">Network + CPT for G</div>
+    <div class="solution-text">
+      <div class="formula">Graph:    T --> G --> A
+          Fg --> G    Fa --> A
+
+Parents of G: {T, Fg}
+Parents of A: {G, Fa}
+T and Fg are root nodes (no parents)
+
+This is NOT a polytree: T->G and T appears in multiple paths.</div>
+      <p style="color:#94a3b8;margin-top:10px">CPT for G (gauge correct 90% when working, 10% when faulty):</p>
+      <table>
+        <thead><tr><th></th><th>T=normal, Fg=0</th><th>T=normal, Fg=1</th><th>T=high, Fg=0</th><th>T=high, Fg=1</th></tr></thead>
+        <tbody>
+          <tr><td>G=normal</td><td>0.9</td><td>0.1</td><td>0.1</td><td>0.9</td></tr>
+          <tr><td>G=high</td><td>0.1</td><td>0.9</td><td>0.9</td><td>0.1</td></tr>
+        </tbody>
+      </table>
+      <p style="color:#94a3b8;margin-top:10px">CPT for A (alarm works unless faulty; sounds only when G=high and not faulty):</p>
+      <table>
+        <thead><tr><th></th><th>G=normal, Fa=0</th><th>G=normal, Fa=1</th><th>G=high, Fa=0</th><th>G=high, Fa=1</th></tr></thead>
+        <tbody>
+          <tr><td>A=1 (sounds)</td><td>0</td><td>0</td><td>1</td><td>0</td></tr>
+          <tr><td>A=0 (silent)</td><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>`
+  },
+
+  // ── ML FOUNDATIONS ────────────────────────────────────────────
+  { id:"ml-basics", navGroup:"Machine Learning", navLabel:"ML Foundations",
+    tagText:"Chapter 19", tagCls:"tag-ml",
+    title:"Machine Learning Foundations",
+    subtitle:"Supervised vs unsupervised, linear regression, logistic regression, MaxEnt, overfitting, evaluation",
+    quizId:"ml",
+    content:`
+<div class="two-col">
+  <div class="card">
+    <h3><span class="icon">🏷️</span>Supervised Learning</h3>
+    <p>Training examples have <strong>known labels</strong> (the "right answer").</p>
+    <p><strong>Classification</strong> — predict a discrete category. E.g., spam/not-spam, M/V alien.</p>
+    <p><strong>Regression</strong> — predict a continuous value. E.g., house price, temperature.</p>
+    <p>Examples: Decision Trees, SVM, Linear Regression, Neural Networks, Naive Bayes.</p>
+  </div>
+  <div class="card">
+    <h3><span class="icon">🔍</span>Unsupervised Learning</h3>
+    <p>No labels — discover hidden structure in data.</p>
+    <p><strong>Clustering</strong> — group similar instances. K-means, hierarchical clustering.</p>
+    <p>Use cases: customer segmentation, topic modeling, finding frequent itemsets.</p>
+    <div class="info-box warning" style="margin-top:10px">
+      <div class="box-icon">⚠️</div>
+      <div>K-Nearest Neighbors (KNN) is <em>supervised</em> (uses labels). K-means is <em>unsupervised</em>.</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h3><span class="icon">📏</span>Linear Regression</h3>
+  <p>Predicts a <strong>continuous output</strong> as a weighted sum of input features plus a bias.</p>
+  <div class="formula">Model:      y_hat = w0 + w1*x1 + w2*x2 + ... + wn*xn   =   w . x + b
+
+Objective:  minimize Sum_i (yi - y_hat_i)^2    (sum of squared errors)
+
+Solution:   w = (X^T X)^{-1} X^T y             (closed-form, if X^T X invertible)
+            or use gradient descent iteratively</div>
+  <p>Linear regression fits a <em>hyperplane</em> through the data. It is used when the output is a real number. Adding polynomial features (x^2, x1*x2) allows non-linear fits while keeping the model linear in its parameters.</p>
+</div>
+
+<div class="card">
+  <h3><span class="icon">📉</span>Logistic Regression &amp; Maximum Entropy (MaxEnt)</h3>
+  <p>Used for <strong>classification</strong> — outputs a probability that an example belongs to a class.</p>
+  <div class="formula">Binary classification:
+  P(y=1 | x)  =  sigma(w . x + b)
+  where sigma(z) = 1 / (1 + exp(-z))    (sigmoid / logistic function)
+
+Multi-class (Softmax):
+  P(y=k | x)  =  exp(wk . x) / SUM_j exp(wj . x)
+
+Decision boundary: linear (same as a perceptron), but outputs probabilities.
+Trained by: maximizing conditional log-likelihood (gradient ascent).</div>
+  <p><strong>MaxEnt (Maximum Entropy) model:</strong> derived from information-theoretic principles. The goal is to find the probability distribution that satisfies all observed feature constraints while being otherwise as uniform (high-entropy) as possible. For classification tasks, MaxEnt produces <em>exactly the same model</em> as logistic regression.</p>
+  <div class="info-box note">
+    <div class="box-icon">💡</div>
+    <div>Logistic regression vs linear regression: both use a linear combination of features. Logistic applies sigmoid to get a probability for classification. Linear predicts real values for regression.</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3><span class="icon">📈</span>Model Evaluation</h3>
+  <div class="two-col" style="margin-top:8px">
+    <div class="compare-card">
+      <h4>Overfitting</h4>
+      <ul>
+        <li>Model fits training noise, not signal</li>
+        <li>High training accuracy, low test accuracy</li>
+        <li>Fix: pruning, regularization, more data, cross-validation</li>
+        <li>NOT simply caused by two examples with different labels</li>
+      </ul>
+    </div>
+    <div class="compare-card">
+      <h4>Metrics</h4>
+      <ul>
+        <li>Precision = TP / (TP + FP)</li>
+        <li>Recall = TP / (TP + FN)</li>
+        <li>Accuracy = (TP+TN) / Total</li>
+        <li>Learning curve: performance vs. training size</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h3><span class="icon">🌲</span>Random Forest vs Decision Tree</h3>
+  <p>A random forest trains many trees on bootstrap samples with random feature subsets, then aggregates their votes (bagging).</p>
+  <ul>
+    <li>More accurate than a single tree (ensemble reduces variance)</li>
+    <li>Less prone to overfitting</li>
+    <li>Can handle non-linear feature combinations</li>
+    <li>Less interpretable than a single decision tree</li>
+    <li><strong>Bagging</strong> is the technique — Bootstrap AGGregating. NOT related to Bayesian networks.</li>
+  </ul>
+</div>`
+  },
+
+  // ── DECISION TREES ────────────────────────────────────────────
+  { id:"decision-trees", navGroup:"Machine Learning", navLabel:"Decision Trees",
+    tagText:"Chapter 19", tagCls:"tag-ml",
+    title:"Decision Trees &amp; ID3",
+    subtitle:"Entropy, information gain, tree construction, ID3 algorithm",
+    quizId:"dt",
+    content:`
+<div class="two-col">
+  <div class="card">
+    <h3><span class="icon">📐</span>Entropy</h3>
+    <p>Measures impurity / uncertainty in a set S. For c classes with proportions p1...pc:</p>
+    <div class="formula">H(S) = - SUM_i  pi * log2(pi)
+
+Pure set (one class only):   H = 0.0  (no uncertainty)
+50/50 binary split:          H = 1.0  (maximum uncertainty)
+Example: 3M, 2V -> p_M=0.6, p_V=0.4
+  H = -0.6*log2(0.6) - 0.4*log2(0.4) = 0.971</div>
+  </div>
+  <div class="card">
+    <h3><span class="icon">📊</span>Information Gain</h3>
+    <p>Reduction in entropy achieved by splitting on attribute A:</p>
+    <div class="formula">IG(S, A) = H(S) - SUM_v  (|Sv|/|S|) * H(Sv)
+
+where Sv = subset of S where attribute A = v
+
+ID3: at each node, pick attribute A with MAX IG(S,A)</div>
+    <div class="info-box warning" style="margin-top:10px">
+      <div class="box-icon">⚠️</div>
+      <div>ID3 is NOT guaranteed to find the smallest tree — finding the optimal tree is NP-hard.</div>
+    </div>
+  </div>
+</div>
+
+<div class="example">
+  <div class="example-header" onclick="toggleExample(this)">
+    <div class="example-title"><span class="ex-badge">EXAM 2016</span>Decision Tree — Three Binary Attributes</div>
+    <div class="example-toggle">▼</div>
+  </div>
+  <div class="example-body">
+    <div class="problem-label">Dataset (A1, A2, A3 binary inputs; y binary output)</div>
+    <div class="problem-text">
+      <table><thead><tr><th>Instance</th><th>A1</th><th>A2</th><th>A3</th><th>y</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>1</td><td>0</td><td>0</td><td>0</td></tr>
+        <tr><td>2</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+        <tr><td>3</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+        <tr><td>4</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+        <tr><td>5</td><td>1</td><td>1</td><td>0</td><td>1</td></tr>
+      </tbody></table>
+    </div>
+    <div class="solution-label">Solution — Root = A2 (highest information gain)</div>
+    <div class="solution-text">
+      <div class="formula">Initial H = -(3/5)*log2(3/5) - (2/5)*log2(2/5) = 0.971
+
+Split on A2=0: instances {1,2} -> y={0,0}  H=0 (pure)
+Split on A2=1: instances {3,4,5} -> y={0,1,1}  H approx 0.918
+
+IG(A2) = 0.971 - (2/5)*0 - (3/5)*0.918 = 0.420   <- BEST
+
+When A2=0: leaf -> y=0
+When A2=1: split further on A1
+  A1=0: instance {3} -> y=0  (leaf)
+  A1=1: instances {4,5} -> y={1,1} -> leaf y=1
+
+Final tree:
+        A2
+       /  \
+     0      1
+    y=0    A1
+          /  \
+        0      1
+       y=0    y=1</div>
+    </div>
+  </div>
+</div>
+
+<div class="example">
+  <div class="example-header" onclick="toggleExample(this)">
+    <div class="example-title"><span class="ex-badge">EXAM 2018</span>Alien Classification — Initial Entropy &amp; Best Split</div>
+    <div class="example-toggle">▼</div>
+  </div>
+  <div class="example-body">
+    <div class="problem-label">5 Mars (M) and 5 Venus (V) aliens. Features: height, color, #legs, stench. Find initial entropy and best split.</div>
+    <div class="solution-label">Solution</div>
+    <div class="solution-text">
+      <div class="formula">Initial entropy: p_M=p_V=0.5  ->  H = -(0.5)*log2(0.5)*2 = 1.0 bit
+
+Best split: COLOR
+  Green group (5 aliens: MMMMV): H = -(4/5)*log2(4/5) - (1/5)*log2(1/5) = 0.722
+  Red group   (5 aliens: MVVVV): H = -(1/5)*log2(1/5) - (4/5)*log2(4/5) = 0.722
+  IG(color) = 1.0 - 0.5*0.722 - 0.5*0.722 = 0.278
+
+Full tree (splitting on Color, then #legs for green, stench for red):
+         Color
+        /      \
+     green      red
+     #legs      stench
+     / \        /   \
+    2   3     yes    no
+    V  MMMM    M    VVVV</div>
+    </div>
+  </div>
+</div>`
+  },
+
+  // ── NEURAL NETWORKS ───────────────────────────────────────────
+  { id:"neural-nets", navGroup:"Machine Learning", navLabel:"Neural Networks",
+    tagText:"Chapter 21", tagCls:"tag-nn",
+    title:"Neural Networks",
+    subtitle:"Perceptrons, MLP, CNN, RNN, Transformers — architecture use cases",
+    quizId:"nn",
+    content:`
+<div class="card">
+  <h3><span class="icon">🧠</span>Basic Elements</h3>
+  <div class="two-col" style="margin-top:8px">
+    <div class="compare-card">
+      <h4>Node Structure</h4>
+      <ul>
+        <li>Inputs: x1, x2, ..., xn</li>
+        <li>Weights: w1, w2, ..., wn</li>
+        <li>Bias: b</li>
+        <li>Net input: z = w1*x1 + ... + wn*xn + b</li>
+        <li>Output: activation_function(z)</li>
+      </ul>
+    </div>
+    <div class="compare-card">
+      <h4>Common Activation Functions</h4>
+      <ul>
+        <li>Step/threshold — perceptron</li>
+        <li>Sigmoid: 1/(1+exp(-z)) — output in (0,1)</li>
+        <li>ReLU: max(0,z) — most common in deep nets</li>
+        <li>Softmax — multi-class output layer</li>
+        <li>tanh — output in (-1,1)</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h3><span class="icon">🏗️</span>Network Types</h3>
+  <div class="three-col" style="margin-top:8px">
+    <div class="compare-card">
+      <h4>Perceptron</h4>
+      <ul>
+        <li>Single layer, threshold activation</li>
+        <li>Linear boundaries only</li>
+        <li>Cannot solve XOR</li>
+        <li>Perceptron learning rule</li>
+      </ul>
+    </div>
+    <div class="compare-card">
+      <h4>MLP (Multi-Layer)</h4>
+      <ul>
+        <li>One or more hidden layers</li>
+        <li>Non-linear decision boundaries</li>
+        <li>Trained via backpropagation</li>
+        <li>Universal function approximator</li>
+      </ul>
+    </div>
+    <div class="compare-card">
+      <h4>Deep Networks</h4>
+      <ul>
+        <li>Many stacked hidden layers</li>
+        <li>Hierarchical feature learning</li>
+        <li>Needs large data + GPU training</li>
+        <li>Foundation for modern AI</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="two-col">
+  <div class="card">
+    <h3><span class="icon">🔬</span>CNN (Convolutional)</h3>
+    <p><strong>Best for:</strong> grid-structured data — images, audio spectrograms, video.</p>
+    <ul>
+      <li>Convolutional filters detect local patterns (edges, textures)</li>
+      <li>Shared weights — far fewer parameters than fully connected</li>
+      <li>Pooling layers provide translation invariance</li>
+      <li>Advantage: exploits spatial locality and shift invariance</li>
+      <li>Disadvantage: not suited for sequential/variable-length data</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h3><span class="icon">🔁</span>RNN (Recurrent)</h3>
+    <p><strong>Best for:</strong> sequential data — text, speech, time series.</p>
+    <ul>
+      <li>Hidden state hₜ = f(hₜ₋₁, xₜ) carries memory across steps</li>
+      <li>LSTM / GRU: gated variants that handle long-range dependencies</li>
+      <li>Advantage: natural handling of variable-length sequences</li>
+      <li>Disadvantage: slow to train (sequential); vanishing gradient</li>
+    </ul>
+  </div>
+</div>
+
+<div class="card">
+  <h3><span class="icon">🤖</span>Transformers — Encoder &amp; Decoder</h3>
+  <p>The dominant architecture for NLP and multimodal AI. Based on <strong>self-attention</strong> — each token attends to all others simultaneously, capturing long-range dependencies without recurrence.</p>
+  <div class="two-col" style="margin-top:8px">
+    <div class="compare-card">
+      <h4>Encoder</h4>
+      <ul>
+        <li>Reads the full input sequence</li>
+        <li>Produces contextual representations for each token</li>
+        <li>Use cases: text classification, named entity recognition, question answering</li>
+        <li>Example architecture: BERT</li>
+      </ul>
+    </div>
+    <div class="compare-card">
+      <h4>Decoder</h4>
+      <ul>
+        <li>Generates output tokens one at a time</li>
+        <li>Attends to (a) its own past outputs and (b) encoder output</li>
+        <li>Use cases: text generation, machine translation, summarization</li>
+        <li>Example: GPT (decoder-only), T5/BART (encoder-decoder)</li>
+      </ul>
+    </div>
+  </div>
+</div>`
+  },
+
+  // ── PLANNING ─────────────────────────────────────────────────
+  { id:"planning", navGroup:"Planning & RL", navLabel:"Planning (STRIPS + State-Space)",
+    tagText:"Chapter 11", tagCls:"tag-plan",
+    title:"Planning",
+    subtitle:"Blocks World, STRIPS, Sussman Anomaly, state-space heuristics, plan-space vs state-space planning",
+    quizId:"plan",
+    content:`
+<div class="two-col">
+  <div class="card">
+    <h3><span class="icon">🆚</span>Problem Solving vs Planning</h3>
+    <p><strong>Search (e.g., A*):</strong> state is an opaque blob; uses problem-specific heuristics; searches through a space of world states.</p>
+    <p><strong>Planning:</strong> opens up the representation — states, goals, and actions are expressed formally (STRIPS/PDDL). Enables richer algorithms: backward search, goal decomposition, partial ordering, automated heuristics.</p>
+  </div>
+  <div class="card">
+    <h3><span class="icon">📦</span>STRIPS Action Representation</h3>
+    <p>Each action has three components:</p>
+    <ul>
+      <li><strong>Preconditions:</strong> facts that must be true to execute</li>
+      <li><strong>Add list (effects+):</strong> facts made true by the action</li>
+      <li><strong>Delete list (effects-):</strong> facts made false by the action</li>
+    </ul>
+    <div class="formula">Action: Stack(X, Y)
+Pre:    Hold(X) AND Clear(Y)
+Add:    On(X,Y), Clear(X), HandEmpty
+Del:    Hold(X), Clear(Y)</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3><span class="icon">🧱</span>The Blocks World Domain</h3>
+  <p>The classic planning test domain. Objects are blocks that can be stacked and a robot arm.</p>
+  <div class="two-col" style="margin-top:8px">
+    <div class="compare-card">
+      <h4>Predicates</h4>
+      <ul>
+        <li><strong>On(X, Y)</strong> — block X is directly on Y</li>
+        <li><strong>OnTable(X)</strong> — X is on the table</li>
+        <li><strong>Clear(X)</strong> — nothing is on top of X</li>
+        <li><strong>Hold(X)</strong> — arm is holding X</li>
+        <li><strong>HandEmpty</strong> — arm is not holding anything</li>
+      </ul>
+    </div>
+    <div class="compare-card">
+      <h4>Actions (STRIPS)</h4>
+      <ul>
+        <li><strong>Pickup(X):</strong> Pre: Clear(X), OnTable(X), HandEmpty. Add: Hold(X). Del: OnTable(X), Clear(X), HandEmpty</li>
+        <li><strong>Putdown(X):</strong> Pre: Hold(X). Add: OnTable(X), Clear(X), HandEmpty. Del: Hold(X)</li>
+        <li><strong>Unstack(X,Y):</strong> Pre: On(X,Y), Clear(X), HandEmpty. Add: Hold(X), Clear(Y). Del: On(X,Y), Clear(X), HandEmpty</li>
+        <li><strong>Stack(X,Y):</strong> (see above)</li>
+      </ul>
+    </div>
+  </div>
+  <div class="info-box note">
+    <div class="box-icon">💡</div>
+    <div>Typical exam question: given a start state (e.g., C on A on table, B on table) and goal state (e.g., A on B, B on C), write out the sequence of actions and how the state changes after each.</div>
+  </div>
+</div>
+
+<div class="card">
+  <h3><span class="icon">⚠️</span>Sussman Anomaly &amp; STRIPS Limitations</h3>
+  <p>STRIPS is a <strong>linear planner</strong>: it works on goals one at a time, concatenating sub-plans. This causes the <strong>Sussman Anomaly</strong>: achieving a later goal can undo a previously achieved one.</p>
+  <div class="formula">Classic example: Goal = On(A,B) AND On(B,C)
+Initial state: A on B, B on table, C on table
+
+If STRIPS tackles On(A,B) first -> it is already satisfied -> moves on
+If it tackles On(B,C) first -> must move A off B, put B on C -> done
+But now On(A,B) might need re-achieving -> loops and adds redundant steps
+
+Result: a valid but suboptimal (too long) plan, or failure to find any plan.
+STRIPS is sound (valid plans only) but INCOMPLETE (may miss solutions).</div>
+</div>
+
+<div class="card">
+  <h3><span class="icon">🗺️</span>State-Space Planning — Forward &amp; Backward Search</h3>
+  <p><strong>State-space planning</strong> searches a graph where <em>nodes are world states</em> and <em>edges are actions</em>.</p>
+  <div class="two-col" style="margin-top:8px">
+    <div class="compare-card">
+      <h4>Forward Search</h4>
+      <ul>
+        <li>Start from initial state</li>
+        <li>Apply applicable actions</li>
+        <li>Check if current state satisfies goal</li>
+        <li>Heuristics guide which states to expand</li>
+        <li>Can use A* with admissible heuristic</li>
+      </ul>
+    </div>
+    <div class="compare-card">
+      <h4>Backward Search (Regression)</h4>
+      <ul>
+        <li>Start from goal description</li>
+        <li>Work backward: "what action could have led here?"</li>
+        <li>Regress goal through action effects/preconditions</li>
+        <li>More goal-directed; smaller branching factor</li>
+        <li>STRIPS uses a form of backward search</li>
+      </ul>
+    </div>
+  </div>
+  <p style="margin-top:12px"><strong>Heuristics for state-space planning:</strong></p>
+  <ul>
+    <li><strong>Number of unsatisfied goals:</strong> count of goal conditions not yet true in current state</li>
+    <li><strong>Relaxed plan heuristic:</strong> solve a relaxed version of the problem (ignore delete lists) and count the steps needed — usually admissible</li>
+    <li><strong>h_max:</strong> cost of the hardest single goal condition</li>
+    <li><strong>h_add:</strong> sum of costs of all individual goal conditions (inadmissible but informative)</li>
+  </ul>
+</div>
+
+<div class="card">
+  <h3><span class="icon">🔄</span>Plan-Space vs State-Space Planning</h3>
+  <div class="two-col" style="margin-top:8px">
+    <div class="compare-card">
+      <h4>State-Space Planning</h4>
+      <ul>
+        <li>Nodes = complete world states</li>
+        <li>Edges = individual actions</li>
+        <li>Finds a total ordering of actions</li>
+        <li>Forward or backward through state space</li>
+        <li>Examples: STRIPS forward, regression, A* planning</li>
+      </ul>
+    </div>
+    <div class="compare-card">
+      <h4>Plan-Space Planning (POP)</h4>
+      <ul>
+        <li>Nodes = partial plans (sets of partially ordered actions)</li>
+        <li>Edges = plan refinements (adding/ordering actions, resolving conflicts)</li>
+        <li>Works with partially ordered action sets</li>
+        <li>Sound AND complete</li>
+        <li>Can find shorter (fewer steps) plans than linear STRIPS</li>
+      </ul>
+    </div>
+  </div>
+  <div class="info-box tip">
+    <div class="box-icon">✅</div>
+    <div>POP advantage: can interleave steps for different subgoals, directly avoiding the Sussman Anomaly. Disadvantage: larger search space, more complex algorithm.</div>
+  </div>
+</div>
+
+<div class="example">
+  <div class="example-header" onclick="toggleExample(this)">
+    <div class="example-title"><span class="ex-badge">EXAM 2016 / 2018</span>STRIPS vs Partial-Order — Comparison Table</div>
+    <div class="example-toggle">▼</div>
+  </div>
+  <div class="example-body">
+    <div class="solution-label">Key Differences</div>
+    <div class="solution-text">
+      <table>
+        <thead><tr><th>Property</th><th>STRIPS (Linear)</th><th>Partial-Order Planner</th></tr></thead>
+        <tbody>
+          <tr><td>Search space</td><td>State space (world states)</td><td>Plan space (partial plans)</td></tr>
+          <tr><td>Goal handling</td><td>Sequential (one at a time)</td><td>Interleaved (simultaneous)</td></tr>
+          <tr><td>Soundness</td><td>YES</td><td>YES</td></tr>
+          <tr><td>Completeness</td><td>NO (can miss solutions)</td><td>YES (finds all solutions)</td></tr>
+          <tr><td>Sussman Anomaly</td><td>Vulnerable</td><td>Handles it naturally</td></tr>
+          <tr><td>Plan representation</td><td>Total ordering of actions</td><td>Partial ordering of actions</td></tr>
+          <tr><td>Complexity</td><td>Simpler algorithm</td><td>More complex, larger search space</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>`
+  },
+
+  // ── REINFORCEMENT LEARNING ────────────────────────────────────
+  { id:"rl", navGroup:"Planning & RL", navLabel:"Reinforcement Learning",
+    tagText:"Chapter 17", tagCls:"tag-rl",
+    title:"Reinforcement Learning",
+    subtitle:"MDPs, Markov property, transition functions, rewards, objective, Bellman equation",
+    quizId:"rl",
+    content:`
+<div class="card">
+  <h3><span class="icon">🎮</span>Markov Decision Process (MDP)</h3>
+  <p>The formal framework for RL problems. An agent acts in an environment to maximize cumulative reward.</p>
+  <div class="formula">MDP = (S, A, T, R, gamma)
+  S:       set of states
+  A:       set of actions
+  T(s,a,s'): P(s' | s, a)  — transition probability distribution
+  R(s, a):   reward received for taking action a in state s
+  gamma in [0,1]: discount factor for future rewards</div>
+</div>
+
+<div class="two-col">
+  <div class="card">
+    <h3><span class="icon">🔗</span>Markov Property</h3>
+    <p>The future depends ONLY on the present state, not on the full history.</p>
+    <div class="formula">P(s_{t+1} | s_0,a_0,...,s_t,a_t)
+    =  P(s_{t+1} | s_t, a_t)
+
+"The current state captures everything
+ relevant about the past."</div>
+  </div>
+  <div class="card">
+    <h3><span class="icon">🎲</span>Deterministic vs Probabilistic</h3>
+    <p><strong>Deterministic:</strong> T(s,a,s') = 1 for exactly one s'. Same action always leads to same state.</p>
+    <p><strong>Probabilistic (stochastic):</strong> T(s,a,s') in [0,1] for multiple s'. Sum over all s' must equal 1. Models uncertain outcomes (robot wheel slipping, etc.).</p>
+  </div>
+</div>
+
+<div class="card">
+  <h3><span class="icon">💰</span>Objective Function</h3>
+  <p>The agent's goal is to find a policy pi: S -> A that maximizes the expected discounted cumulative reward:</p>
+  <div class="formula">G_t = R_t + gamma*R_{t+1} + gamma^2*R_{t+2} + ...  =  SUM_{k=0}^inf  gamma^k * R_{t+k}
+
+Objective: find pi* = argmax_pi  E[ G_0 ]
+
+gamma = 0: greedy — only immediate reward counts
+gamma = 1: long-term — all future rewards weighted equally
+gamma in (0,1): balances short-term vs long-term</div>
+</div>
+
+<div class="card">
+  <h3><span class="icon">🗺️</span>Bellman Equation &amp; Value Iteration</h3>
+  <p>The optimal value function V*(s) satisfies:</p>
+  <div class="formula">V*(s) = max_a [ R(s,a) + gamma * SUM_{s'} T(s,a,s') * V*(s') ]
+
+Optimal policy:
+  pi*(s) = argmax_a [ R(s,a) + gamma * SUM_{s'} T(s,a,s') * V*(s') ]
+
+Value Iteration: start with V(s)=0, repeatedly apply Bellman update
+until convergence. Then extract pi* from converged V*.</div>
+  <div class="info-box note">
+    <div class="box-icon">💡</div>
+    <div><strong>RL vs Planning:</strong> classical planning is given T and R explicitly in a formal model. RL agents must <em>learn</em> T and R through interaction — observing (s, a, r, s') tuples from the environment.</div>
+  </div>
+</div>`
+  },
+
+  // ── TRUE/FALSE DRILL ──────────────────────────────────────────
+  { id:"true-false-drill", navGroup:"Review", navLabel:"True / False Drill",
+    tagText:"Exam Prep", tagCls:"tag-review",
+    title:"True / False Drill",
+    subtitle:"20 questions based directly on the 2016 and 2018 exams — covering all topics",
+    quizId:"tf",
+    content:""
+  }
+];
+
+// ================================================================
+// RENDERING ENGINE — change layout and behaviour here
+// ================================================================
+
+// Track scores per quiz
+const scores = {};
+Object.keys(QUIZ_DATA).forEach(k => { scores[k] = { correct:0, total: QUIZ_DATA[k].length }; });
+
+function renderNav() {
+  const nav = document.getElementById('app-nav');
+  let html = '';
+  let currentGroup = '';
+  TOPICS.forEach(topic => {
+    if (topic.navGroup !== currentGroup) {
+      currentGroup = topic.navGroup;
+      html += `<div class="nav-group-label">${currentGroup}</div>`;
+    }
+    html += `<div class="nav-item" id="nav-${topic.id}" onclick="showTopic('${topic.id}')">
+               <div class="nav-dot"></div>${topic.navLabel}
+             </div>`;
+  });
+  nav.innerHTML = html;
+}
+
+function renderTopics() {
+  const main = document.getElementById('app-main');
+  let html = '';
+  TOPICS.forEach((topic, i) => {
+    const isFirst = i === 0;
+    html += `<div class="topic${isFirst ? ' active' : ''}" id="topic-${topic.id}">
+      <div class="topic-header">
+        <div class="topic-tag ${topic.tagCls}">${topic.tagText}</div>
+        <h2>${topic.title}</h2>
+        <p>${topic.subtitle}</p>
+      </div>
+      ${topic.content}
+      <div id="quiz-section-${topic.quizId}" class="quiz-container">
+        <div class="quiz-header">Quick Quiz</div>
+        <div class="quiz-sub">Click an option to check your answer instantly.</div>
+        <div class="quiz-score-bar">
+          <div>
+            <div class="score-num" id="score-display-${topic.quizId}">0 / ${QUIZ_DATA[topic.quizId].length}</div>
+            <div class="score-label">correct answers</div>
+          </div>
+          <button class="quiz-reset-btn" onclick="resetQuiz('${topic.quizId}')">↺ Reset</button>
+        </div>
+        <div id="quiz-body-${topic.quizId}"></div>
+      </div>
+    </div>`;
+  });
+  main.innerHTML = html;
+}
+
+function buildQuiz(quizId) {
+  const container = document.getElementById('quiz-body-' + quizId);
+  if (!container) return;
+  const data = QUIZ_DATA[quizId];
+  scores[quizId] = { correct:0, total:data.length };
+  updateScoreDisplay(quizId);
+  const letters = ['A','B','C','D','E'];
+  container.innerHTML = data.map((item, qi) => `
+    <div class="quiz-q" id="qq-${quizId}-${qi}">
+      <div class="quiz-question">${qi+1}. ${item.q}</div>
+      <div class="quiz-options">
+        ${item.opts.map((opt, oi) => `
+          <div class="quiz-option" id="qo-${quizId}-${qi}-${oi}"
+               onclick="handleAnswer('${quizId}',${qi},${oi})">
+            <span class="opt-letter">${letters[oi]}</span>${opt}
+          </div>`).join('')}
+      </div>
+      <div class="quiz-feedback" id="qf-${quizId}-${qi}"></div>
+    </div>`).join('');
+}
+
+function handleAnswer(quizId, qi, selected) {
+  const qDiv = document.getElementById(`qq-${quizId}-${qi}`);
+  if (qDiv.dataset.done) return;
+  qDiv.dataset.done = '1';
+  const item = QUIZ_DATA[quizId][qi];
+  const isCorrect = selected === item.ans;
+  // style selected option
+  document.getElementById(`qo-${quizId}-${qi}-${selected}`)
+    .classList.add(isCorrect ? 'selected-correct' : 'selected-wrong');
+  if (!isCorrect) {
+    document.getElementById(`qo-${quizId}-${qi}-${item.ans}`)
+      .classList.add('reveal-correct');
+  }
+  // disable all options
+  item.opts.forEach((_, oi) => {
+    const el = document.getElementById(`qo-${quizId}-${qi}-${oi}`);
+    el.style.cursor = 'default';
+    el.onclick = null;
+  });
+  // show feedback
+  const fb = document.getElementById(`qf-${quizId}-${qi}`);
+  fb.textContent = (isCorrect ? '✓ Correct! ' : '✗ Incorrect. ') + item.exp;
+  fb.className = 'quiz-feedback show ' + (isCorrect ? 'correct' : 'wrong');
+  if (isCorrect) scores[quizId].correct++;
+  updateScoreDisplay(quizId);
+}
+
+function updateScoreDisplay(quizId) {
+  const el = document.getElementById('score-display-' + quizId);
+  if (el) el.textContent = `${scores[quizId].correct} / ${scores[quizId].total}`;
+}
+
+function resetQuiz(quizId) {
+  buildQuiz(quizId);
+}
+
+function showTopic(id) {
+  // hide all topics
+  document.querySelectorAll('.topic').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('topic-' + id).classList.add('active');
+  document.getElementById('nav-' + id).classList.add('active');
+  // lazy-init quiz for this topic
+  const topic = TOPICS.find(t => t.id === id);
+  if (topic) {
+    const body = document.getElementById('quiz-body-' + topic.quizId);
+    if (body && body.children.length === 0) buildQuiz(topic.quizId);
+  }
+}
+
+function toggleExample(header) {
+  header.classList.toggle('open');
+  const body = header.nextElementSibling;
+  body.classList.toggle('open');
+}
+
+// ── INIT ──────────────────────────────────────────────────────
+function init() {
+  renderNav();
+  renderTopics();
+  // activate first nav item
+  const firstNav = document.querySelector('.nav-item');
+  if (firstNav) firstNav.classList.add('active');
+  // build quiz for first topic
+  const firstTopic = TOPICS[0];
+  if (firstTopic) buildQuiz(firstTopic.quizId);
+}
+
+init();
+</script>
+</body>
+</html>
